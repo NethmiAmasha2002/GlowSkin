@@ -1,0 +1,11 @@
+# Frontend
+skincare-frontend/node_modules/
+skincare-frontend/dist/
+skincare-frontend/.angular/
+
+# Backend
+backend/target/
+backend/.idea/
+
+# Keys - IMPORTANT!
+*.pem
