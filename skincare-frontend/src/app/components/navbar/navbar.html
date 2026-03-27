@@ -1,0 +1,72 @@
+<nav class="navbar" [class.scrolled]="isScrolled">
+ 
+  <!-- Brand -->
+  <a routerLink="/" class="nav-brand">
+    <div class="brand-icon">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+        <circle cx="16" cy="16" r="15" fill="url(#g1)"/>
+        <path d="M16 6 C16 6, 11 12, 11 16.5 C11 19.5 13.2 22 16 22 C18.8 22 21 19.5 21 16.5 C21 12 16 6 16 6Z" fill="white" opacity="0.95"/>
+        <circle cx="13" cy="15" r="1.5" fill="white" opacity="0.45"/>
+        <defs>
+          <linearGradient id="g1" x1="0" y1="0" x2="32" y2="32">
+            <stop offset="0%" stop-color="#f0b8cc"/>
+            <stop offset="100%" stop-color="#9e3878"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <div class="brand-text">
+      <span class="brand-name">GlowSkin</span>
+      <span class="brand-tagline">Clean Beauty</span>
+    </div>
+  </a>
+ 
+  <!-- Right Side -->
+  <div class="nav-links">
+    <a routerLink="/" class="nav-link">🏠 Home</a>
+    <a routerLink="/products" class="nav-link">🛍️ Products</a>
+ 
+    <!-- NOT logged in -->
+    <ng-container *ngIf="!authService.isLoggedIn()">
+      <a routerLink="/login" class="nav-link">Login</a>
+      <a routerLink="/register" class="btn-nav-register">Register</a>
+    </ng-container>
+ 
+    <!-- Logged in -->
+    <ng-container *ngIf="authService.isLoggedIn()">
+      
+ 
+      <!-- Cart -->
+      <a routerLink="/cart" class="nav-cart">
+        🛒
+        <span class="cart-badge" *ngIf="cartService.getTotalCount() > 0">
+          {{cartService.getTotalCount()}}
+        </span>
+        Cart
+      </a>
+ 
+      <!-- ✅ Notification Bell -->
+      <app-notifications></app-notifications>
+ 
+      <!-- User dropdown -->
+      <div class="user-menu" (click)="toggleDropdown()" [class.open]="dropdownOpen">
+        <div class="user-avatar">{{getUserInitial()}}</div>
+        <span class="user-name">{{getUserName()}}</span>
+        <span class="arrow">▾</span>
+        <div class="dropdown" *ngIf="dropdownOpen">
+          <a routerLink="/cart" class="drop-item" (click)="dropdownOpen=false">
+            🛒 My Cart
+            <span class="drop-badge" *ngIf="cartService.getTotalCount() > 0">
+              {{cartService.getTotalCount()}}
+            </span>
+          </a>
+          <div class="drop-divider"></div>
+          <button class="drop-item logout" (click)="logout()">🚪 Logout</button>
+        </div>
+      </div>
+ 
+    </ng-container>
+  </div>
+</nav>
+ 
+<div class="nav-spacer"></div>

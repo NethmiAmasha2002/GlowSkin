@@ -1,0 +1,173 @@
+@if (product) {
+<div class="detail-page">
+
+  <!-- Back Button -->
+  <div class="back-btn">
+    <button routerLink="/products" class="back-button">
+      ← Back to Products
+    </button>
+  </div>
+
+  <!-- Product Hero -->
+  <div class="product-hero">
+    <div class="product-image-section">
+      <img [src]="product.imageUrl" [alt]="product.name"
+           class="product-main-img" (error)="onImgError($event)"/>
+      <div class="badges">
+        <span class="badge-new">✨ New</span>
+        <span class="badge-category">{{product.category}}</span>
+      </div>
+    </div>
+
+    <div class="product-info-section">
+      <h1>{{product.name}}</h1>
+
+      <div class="rating-summary">
+        @for (star of ratingStars; track $index) {
+          <span class="star-icon" [class.filled]="$index < avgRating">★</span>
+        }
+        <span class="rating-text">
+          {{avgRating.toFixed(1)}}
+          ({{reviews.length}} reviews)
+        </span>
+      </div>
+
+      <p class="product-description">{{product.description}}</p>
+
+      <div class="product-details">
+        <div class="detail-item">
+          <span>📦</span>
+          <span>{{product.category}}</span>
+        </div>
+        <div class="detail-item">
+          <span>✔️</span>
+          <span>Dermatologist Tested</span>
+        </div>
+        <div class="detail-item">
+          <span>🌱</span>
+          <span>Cruelty Free</span>
+        </div>
+        <div class="detail-item">
+          <span>🔬</span>
+          <span>Clinically Proven</span>
+        </div>
+      </div>
+
+      <div class="price-section">
+        <span class="price">${{product.price}}</span>
+        <span class="free-delivery">🚚 Free Delivery</span>
+      </div>
+
+      <div class="quantity-section">
+        <span>Quantity:</span>
+        <button class="qty-btn"
+          (click)="quantity > 1 ? quantity = quantity - 1 : null">
+          −
+        </button>
+        <span class="qty-number">{{quantity}}</span>
+        <button class="qty-btn"
+          (click)="quantity = quantity + 1">
+          +
+        </button>
+      </div>
+
+      <button class="add-cart-btn" (click)="addToCart()">
+        🛒 Add to Cart — ${{(product.price * quantity).toFixed(2)}}
+      </button>
+    </div>
+  </div>
+
+  <!-- Reviews Section -->
+  <div class="reviews-section">
+    <h2>⭐ Customer Reviews</h2>
+
+    <div class="review-stats">
+      <div class="avg-rating">
+        <span class="big-rating">{{avgRating.toFixed(1)}}</span>
+        <div class="stars-row">
+          @for (star of ratingStars; track $index) {
+            <span class="star-icon" [class.filled]="$index < avgRating">★</span>
+          }
+        </div>
+        <span>{{reviews.length}} reviews</span>
+      </div>
+    </div>
+
+    <div class="reviews-list">
+      @for (review of reviews; track $index) {
+        <div class="review-card">
+          <div class="review-header">
+            <div class="reviewer-avatar">
+              {{review.reviewer.charAt(0)}}
+            </div>
+            <div class="reviewer-info">
+              <strong>{{review.reviewer}}</strong>
+              <div class="review-stars">
+                @for (star of ratingStars; track $index) {
+                  <span class="small-star" [class.filled]="$index < review.rating">★</span>
+                }
+              </div>
+            </div>
+            <span class="review-date">{{review.date}}</span>
+          </div>
+          <p class="review-comment">{{review.comment}}</p>
+        </div>
+      }
+    </div>
+
+    <!-- Add Review Form -->
+    <div class="add-review">
+      <h3>✍️ Write a Review</h3>
+
+      @if (reviewSubmitted) {
+        <div class="review-success">
+          ✅ Review saved! Thank you.
+        </div>
+      }
+
+      <div class="review-form">
+        <input [(ngModel)]="newReview.reviewer"
+               placeholder="Your Name"
+               class="review-input"/>
+
+        <div class="star-select">
+          <span>Your Rating:</span>
+          @for (star of stars; track star) {
+            <span class="selectable-star"
+              [class.selected]="star <= (hoverRating || newReview.rating)"
+              (mouseenter)="setHoverRating(star)"
+              (mouseleave)="clearHoverRating()"
+              (click)="setRating(star)">
+              ★
+            </span>
+          }
+        </div>
+
+        <textarea [(ngModel)]="newReview.comment"
+                  placeholder="Share your experience..."
+                  class="review-textarea"
+                  rows="4"></textarea>
+
+        <button class="submit-review-btn"
+                (click)="submitReview()"
+                [disabled]="reviewSubmitting">
+          @if (!reviewSubmitting) {
+            ➤ Submit Review
+          }
+          @if (reviewSubmitting) {
+            Saving...
+          }
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+}
+
+@if (!product) {
+  <div class="loading">
+    <div class="loading-spinner">🌸</div>
+    <p>Loading product...</p>
+  </div>
+}

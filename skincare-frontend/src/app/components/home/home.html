@@ -1,0 +1,413 @@
+<!-- ========== OFFER CLAIMED POPUP ========== -->
+<div class="offer-popup" *ngIf="offerClaimed">
+  <div class="popup-inner">
+    <div class="popup-icon">🎉</div>
+    <div>
+      <strong>Offer Claimed!</strong>
+      <p>Code <span class="popup-code">GLOW20</span> applied — 20% off your order!</p>
+    </div>
+  </div>
+</div>
+ 
+<!-- ========== OFFER ERROR MODALS ========== -->
+ 
+<!-- Must login first -->
+<div class="offer-modal-bg" *ngIf="offerError === 'login'" (click)="dismissOfferError()">
+  <div class="offer-modal" (click)="$event.stopPropagation()">
+    <div class="modal-icon">🔒</div>
+    <h3>Login Required</h3>
+    <p>You need to be logged in to claim this offer. Please sign in to your account first.</p>
+    <div class="modal-btns">
+      <button class="modal-btn-ghost" (click)="dismissOfferError()">Cancel</button>
+      <a routerLink="/login" class="modal-btn-primary" (click)="dismissOfferError()">Login Now →</a>
+    </div>
+  </div>
+</div>
+ 
+<!-- Already used -->
+<div class="offer-modal-bg" *ngIf="offerError === 'used'" (click)="dismissOfferError()">
+  <div class="offer-modal" (click)="$event.stopPropagation()">
+    <div class="modal-icon">⚠️</div>
+    <h3>Offer Already Used</h3>
+    <p>You have already claimed this offer on your account. Each account can only claim it once.</p>
+    <div class="modal-btns">
+      <button class="modal-btn-primary" (click)="dismissOfferError()">Got It</button>
+    </div>
+  </div>
+</div>
+ 
+<!-- ========== LOGIN REQUIRED POPUP (Cart) ========== -->
+<div class="offer-modal-bg" *ngIf="showLoginPopup" (click)="dismissLoginPopup()">
+  <div class="offer-modal" (click)="$event.stopPropagation()">
+    <div class="modal-icon">🛒</div>
+    <h3>Sign In to Shop</h3>
+    <p>You need to be logged in to add products to your cart. Please sign in to your account.</p>
+    <div class="modal-btns">
+      <button class="modal-btn-ghost" (click)="dismissLoginPopup()">Cancel</button>
+      <button class="modal-btn-primary" (click)="goToLogin()">Login Now →</button>
+    </div>
+  </div>
+</div>
+ 
+<!-- ========== MARQUEE STRIP ========== -->
+<div class="marquee-strip">
+  <div class="marquee-track">
+    <span>🌿 100% Natural Ingredients</span>
+    <span>✦</span>
+    <span>✨ Free Shipping on Orders $30+</span>
+    <span>✦</span>
+    <span>🔬 Dermatologist Tested</span>
+    <span>✦</span>
+    <span>💎 20% Off Your First Order — Code: GLOW20</span>
+    <span>✦</span>
+    <span>🌿 100% Natural Ingredients</span>
+    <span>✦</span>
+    <span>✨ Free Shipping on Orders $30+</span>
+    <span>✦</span>
+    <span>🔬 Dermatologist Tested</span>
+    <span>✦</span>
+    <span>💎 20% Off Your First Order — Code: GLOW20</span>
+    <span>✦</span>
+  </div>
+</div>
+ 
+<!-- ========== HERO ========== -->
+<section class="hero">
+  <div class="hero-blob blob1"></div>
+  <div class="hero-blob blob2"></div>
+  <div class="hero-blob blob3"></div>
+ 
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-eyebrow">✦ Clean Beauty Since 2020</div>
+      <h1 class="hero-title">
+        Skin That<br>
+        <em>Glows</em> From<br>
+        Within
+      </h1>
+      <p class="hero-desc">
+        Science-backed formulas crafted with the finest natural ingredients.
+        No fillers. No harsh chemicals. Just real results your skin will love.
+      </p>
+      <div class="hero-actions">
+        <a routerLink="/products" class="btn-hero-primary">Shop Now →</a>
+        <a href="#about" class="btn-hero-ghost">Learn More</a>
+      </div>
+      <div class="hero-trust">
+        <div class="trust-item">
+          <span class="trust-num">50+</span>
+          <span class="trust-label">Products</span>
+        </div>
+        <div class="trust-sep"></div>
+        <div class="trust-item">
+          <span class="trust-num">10K+</span>
+          <span class="trust-label">Happy Customers</span>
+        </div>
+        <div class="trust-sep"></div>
+        <div class="trust-item">
+          <span class="trust-num">4.9★</span>
+          <span class="trust-label">Avg Rating</span>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="hero-visual">
+      <div class="hero-img-wrap">
+        <img src="https://img.freepik.com/free-photo/spring-marketing-sales_23-2151949771.jpg?semt=ais_hybrid&w=740&q=80" alt="Skincare" class="hero-img">
+        <div class="hero-pill pill1">🌿 Vegan Formula</div>
+        <div class="hero-pill pill2">⭐ Best Seller</div>
+        <div class="hero-card-float">
+          <div class="float-icon">💧</div>
+          <div>
+            <div class="float-title">Deep Hydration</div>
+            <div class="float-sub">24-hour moisture lock</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- ========== SPECIAL OFFER BANNER ========== -->
+<section class="offer-banner" id="offers">
+  <div class="offer-inner">
+    <div class="offer-left">
+      <span class="offer-tag">⚡ Limited Time Offer</span>
+      <h2 class="offer-title">Get 20% Off Your First Order</h2>
+      <p class="offer-desc">Use code <strong>GLOW20</strong> at checkout. Valid for all new customers.</p>
+      <button class="btn-offer" (click)="claimOffer()">🎁 Claim Offer — 20% Off</button>
+    </div>
+    <div class="offer-right">
+      <div class="offer-cards">
+        <div class="offer-card" *ngFor="let deal of deals">
+          <span class="deal-badge">{{deal.badge}}</span>
+          <img [src]="deal.image" [alt]="deal.name" class="deal-img" (error)="onImgError($event)">
+          <div class="deal-name">{{deal.name}}</div>
+          <div class="deal-prices">
+            <span class="deal-old">${{deal.oldPrice}}</span>
+            <span class="deal-new">${{deal.newPrice}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- ========== ABOUT / WHAT WE ARE ========== -->
+<section class="about-section" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-imgs">
+        <img src="https://img.freepik.com/free-photo/colourful-flowers-cosmetic-bottles-composition_23-2147835621.jpg?semt=ais_hybrid&w=740&q=80" class="about-img-main" alt="About">
+        <img src="https://img.freepik.com/free-photo/spring-marketing-sales_23-2151949770.jpg?semt=ais_rp_progressive&w=740&q=80" class="about-img-small" alt="About 2">
+        <div class="about-stat-card">
+          <span class="asc-num">5★</span>
+          <span class="asc-text">Rated by 10,000+ customers</span>
+        </div>
+      </div>
+      <div class="about-text">
+        <div class="section-eyebrow">✦ Who We Are</div>
+        <h2 class="section-title">We Believe Beautiful<br>Skin Is a <em>Right</em></h2>
+        <p class="about-desc">
+          GlowSkin was born out of a simple belief — everyone deserves access to
+          effective, safe, and affordable skincare. We work with dermatologists
+          and botanists to create products that truly perform.
+        </p>
+        <p class="about-desc">
+          Every ingredient is carefully chosen, every formula clinically tested.
+          No fluff, no gimmicks — just skincare that works.
+        </p>
+        <div class="about-values">
+          <div class="value-item" *ngFor="let v of values">
+            <span class="value-icon">{{v.icon}}</span>
+            <div>
+              <strong>{{v.title}}</strong>
+              <p>{{v.desc}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- ========== FEATURED PRODUCTS ========== -->
+<section class="featured-section" id="products">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <div class="section-eyebrow">✦ Our Collection</div>
+        <h2 class="section-title">Bestselling Products</h2>
+      </div>
+      <a routerLink="/products" class="view-all">View All →</a>
+    </div>
+ 
+    <!-- Category Filter -->
+    <div class="cat-filter">
+      <button class="cat-btn" [class.active]="activeCategory === ''"
+        (click)="filterProducts('')">All</button>
+      <button class="cat-btn" *ngFor="let c of categories"
+        [class.active]="activeCategory === c"
+        (click)="filterProducts(c)">{{c}}</button>
+    </div>
+ 
+    <div class="products-grid">
+    <div class="prod-card" *ngFor="let p of displayedProducts">
+  <div class="prod-img-wrap">
+    <img [src]="p.imageUrl" [alt]="p.name" class="prod-img" (error)="onImgError($event)">
+    <div class="prod-hover">
+      <button class="btn-add" (click)="addToCart(p)">
+        {{ authService.isLoggedIn() ? "🛒 Add to Cart" : "🔒 Sign In to Buy" }}
+      </button>
+    </div>
+    <span class="prod-cat-badge">{{p.category}}</span>
+    <span class="badge-offer" *ngIf="p.discount && p.discount > 0">{{p.discount}}% OFF</span>
+  </div>
+
+  <div class="prod-body">
+    <h3 class="prod-name" [routerLink]="['/products', p.id]">{{p.name}}</h3>
+    <p class="prod-desc">{{p.description}}</p>
+    <div class="prod-footer">
+      <div class="price-wrap">
+        <ng-container *ngIf="p.discount && p.discount > 0; else normalPrice">
+          <span class="offer-old">${{p.price.toFixed(2)}}</span>
+          <span class="offer-new">${{(p.price - p.price * p.discount / 100).toFixed(2)}}</span>
+          <span class="offer-tag-sm">{{p.discount}}% OFF</span>
+        </ng-container>
+        <ng-template #normalPrice>
+          <span class="prod-price">${{p.price.toFixed(2)}}</span>
+        </ng-template>
+      </div>
+      <button class="btn-plus" (click)="addToCart(p)">+</button>
+    </div>
+  </div>
+</div>
+</div>
+<!-- Cart Toast -->
+<div class="cart-toast" [class.show]="cartToastVisible">
+  <span class="cart-toast-icon">🛒</span>
+  <div>
+    <div class="cart-toast-title">Added to Cart!</div>
+    <div class="cart-toast-sub">{{ cartToastMsg }}</div>
+  </div>
+  <span class="cart-toast-check">✅</span>
+</div>
+  </div>
+</section>
+
+<!-- ========== HOW IT WORKS ========== -->
+<section class="how-section">
+  <div class="container">
+    <div class="section-header center">
+      <div class="section-eyebrow">✦ Simple & Effective</div>
+      <h2 class="section-title">Your Routine in 3 Steps</h2>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card" *ngFor="let step of steps; let i = index">
+        <div class="step-num">{{i + 1}}</div>
+        <div class="step-icon">{{step.icon}}</div>
+        <h3 class="step-title">{{step.title}}</h3>
+        <p class="step-desc">{{step.desc}}</p>
+        <div class="step-arrow" *ngIf="i < steps.length - 1">→</div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- ========== REVIEWS ========== -->
+<section class="reviews-section" id="reviews">
+  <div class="container">
+    <div class="section-header center">
+      <div class="section-eyebrow">✦ Real People, Real Results</div>
+      <h2 class="section-title">What Our Customers Say</h2>
+    </div>
+    <div class="reviews-grid">
+      <div class="review-card" *ngFor="let r of sampleReviews">
+        <div class="review-top">
+          <div class="reviewer-av">{{r.name.charAt(0)}}</div>
+          <div>
+            <strong class="reviewer-name">{{r.name}}</strong>
+            <div class="review-stars">
+              <span *ngFor="let s of [1,2,3,4,5]" [class.lit]="s <= r.rating">★</span>
+            </div>
+          </div>
+          <span class="verified-badge">✔ Verified</span>
+        </div>
+        <p class="review-text">"{{r.comment}}"</p>
+        <span class="review-product">on {{r.product}}</span>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- ========== CONTACT ========== -->
+<section class="contact-section" id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="section-eyebrow">✦ Get In Touch</div>
+        <h2 class="section-title">We're Here<br>to Help You</h2>
+        <p class="contact-desc">
+          Have questions about our products? Need skincare advice?
+          Our beauty experts are ready to help you find your perfect routine.
+        </p>
+        <div class="contact-items">
+          <div class="contact-item">
+            <span class="ci-icon">📧</span>
+            <div>
+              <strong>Email Us</strong>
+              <p>hello&#64;glowskin.com</p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <span class="ci-icon">📞</span>
+            <div>
+              <strong>Call Us</strong>
+              <p>+1 (555) 123-4567</p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <span class="ci-icon">🕐</span>
+            <div>
+              <strong>Working Hours</strong>
+              <p>Mon–Sat, 9am – 6pm EST</p>
+            </div>
+          </div>
+        </div>
+      </div>
+ 
+      <div class="contact-form-wrap">
+        <form class="contact-form" (ngSubmit)="sendMessage()">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Your Name</label>
+              <input type="text" [(ngModel)]="contact.name" name="name" placeholder="Jane Doe">
+            </div>
+            <div class="form-group">
+              <label>Email Address</label>
+              <input type="email" [(ngModel)]="contact.email" name="email" placeholder="jane@example.com">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Subject</label>
+            <input type="text" [(ngModel)]="contact.subject" name="subject" placeholder="How can we help?">
+          </div>
+          <div class="form-group">
+            <label>Message</label>
+            <textarea [(ngModel)]="contact.message" name="message" rows="5" placeholder="Tell us more..."></textarea>
+          </div>
+          <button type="submit" class="btn-send" [disabled]="messageSent">
+            {{messageSent ? '✅ Message Sent!' : '➤ Send Message'}}
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- ========== FOOTER ========== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">🌸 GlowSkin</div>
+        <p class="footer-tagline">Premium skincare for everyone. Science meets nature.</p>
+        <div class="social-links">
+          <a href="#" class="social-btn">📸 Instagram</a>
+          <a href="#" class="social-btn">🐦 Twitter</a>
+          <a href="#" class="social-btn">📘 Facebook</a>
+        </div>
+      </div>
+ 
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <a routerLink="/products">All Products</a>
+        <a routerLink="/products" (click)="filterProducts('Moisturizer')">Moisturizers</a>
+        <a routerLink="/products" (click)="filterProducts('Serum')">Serums</a>
+        <a routerLink="/products" (click)="filterProducts('Sunscreen')">Sunscreens</a>
+        <a routerLink="/products" (click)="filterProducts('Toner')">Toners</a>
+      </div>
+ 
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#about">About Us</a>
+        <a href="#contact">Contact</a>
+        <a href="#">Blog</a>
+        <a href="#">Careers</a>
+      </div>
+ 
+      <div class="footer-col">
+        <h4>Help</h4>
+        <a href="#">FAQs</a>
+        <a href="#">Shipping Policy</a>
+        <a href="#">Return Policy</a>
+        <a href="#">Privacy Policy</a>
+      </div>
+    </div>
+ 
+    <div class="footer-bottom">
+      <span>© 2025 GlowSkin. All rights reserved.</span>
+      <span>Made with 💗 for beautiful skin</span>
+    </div>
+  </div>
+</footer>

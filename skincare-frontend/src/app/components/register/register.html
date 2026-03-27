@@ -1,0 +1,101 @@
+<div class="auth-page">
+  <div class="auth-container">
+
+    <div class="auth-left">
+      <div class="brand">
+        <span class="logo">🌸</span>
+        <h1>GlowSkin</h1>
+      </div>
+      <p class="tagline">Join thousands of happy customers with glowing skin!</p>
+      <div class="features">
+        <div class="feature">
+          <span>🎁</span>
+          <p>Exclusive Member Offers</p>
+        </div>
+        <div class="feature">
+          <span>🚚</span>
+          <p>Free Delivery</p>
+        </div>
+        <div class="feature">
+          <span>⭐</span>
+          <p>Earn Reward Points</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="auth-right">
+      <div class="auth-card">
+        <h2>Create Account ✨</h2>
+        <p class="subtitle">Join GlowSkin today!</p>
+
+        @if (errorMsg) {
+          <div class="error-msg">
+            <mat-icon>error</mat-icon>
+            {{errorMsg}}
+          </div>
+        }
+
+        <div class="form-group">
+          <label>Full Name</label>
+          <div class="input-wrapper">
+            <mat-icon>person</mat-icon>
+            <input [(ngModel)]="name"
+                   type="text"
+                   placeholder="Enter your name"
+                   class="auth-input"/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Email Address</label>
+          <div class="input-wrapper">
+            <mat-icon>email</mat-icon>
+            <input [(ngModel)]="email"
+                   type="email"
+                   placeholder="Enter your email"
+                   class="auth-input"/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Password</label>
+          <div class="input-wrapper">
+            <mat-icon>lock</mat-icon>
+            <input [(ngModel)]="password"
+                   [type]="showPassword ? 'text' : 'password'"
+                   placeholder="Create a password"
+                   class="auth-input"/>
+            <mat-icon class="toggle-pass"
+              (click)="showPassword = !showPassword">
+              {{showPassword ? 'visibility_off' : 'visibility'}}
+            </mat-icon>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Confirm Password</label>
+          <div class="input-wrapper">
+            <mat-icon>lock_outline</mat-icon>
+            <input [(ngModel)]="confirmPassword"
+                   [type]="showPassword ? 'text' : 'password'"
+                   placeholder="Confirm your password"
+                   class="auth-input"/>
+          </div>
+        </div>
+
+        <button mat-raised-button
+                class="auth-btn"
+                (click)="register()">
+          <mat-icon>person_add</mat-icon>
+          Create Account
+        </button>
+
+        <p class="switch-auth">
+          Already have an account?
+          <a routerLink="/login">Sign In</a>
+        </p>
+      </div>
+    </div>
+
+  </div>
+</div>

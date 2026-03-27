@@ -1,0 +1,156 @@
+<div class="products-page">
+ 
+  <!-- HERO -->
+  <div class="hero">
+    <div class="petals-container">
+      <div class="petal petal-1"></div><div class="petal petal-2"></div>
+      <div class="petal petal-3"></div><div class="petal petal-4"></div>
+      <div class="petal petal-5"></div><div class="petal petal-6"></div>
+      <div class="petal petal-7"></div><div class="petal petal-8"></div>
+    </div>
+    <div class="hero-mesh"></div>
+    <div class="hero-inner">
+      <div class="hero-eyebrow">🌸 Our Collection 🌸</div>
+      <h1 class="hero-title">
+        Discover Your<br>
+        <span class="shimmer-text">Perfect Glow</span>
+      </h1>
+      <p class="hero-sub">Science-backed skincare with the finest natural ingredients</p>
+     
+      <div class="hero-stats">
+        <div class="hstat"><span class="hstat-n">50+</span><span class="hstat-l">Products</span></div>
+        <div class="hstat-sep"></div>
+        <div class="hstat"><span class="hstat-n">5★</span><span class="hstat-l">Rated</span></div>
+        <div class="hstat-sep"></div>
+        <div class="hstat"><span class="hstat-n">Free</span><span class="hstat-l">Delivery</span></div>
+      </div>
+    <div class="hero-mesh"></div>
+
+<!-- Top Left Flower -->
+<svg viewBox="0 0 80 80" fill="none"
+  style="position:absolute;top:0;left: -400;width:90px;height:90px;z-index:1;pointer-events:none;animation:flowerSpin 20s linear infinite;opacity:0.75;">
+  <ellipse cx="40" cy="20" rx="10" ry="18" fill="#f4b8d0" transform="rotate(0 40 40)"/>
+  <ellipse cx="40" cy="20" rx="10" ry="18" fill="#e8a0c0" transform="rotate(60 40 40)"/>
+  <ellipse cx="40" cy="20" rx="10" ry="18" fill="#f0b0cc" transform="rotate(120 40 40)"/>
+  <ellipse cx="40" cy="20" rx="10" ry="18" fill="#e0a8c4" transform="rotate(180 40 40)"/>
+  <ellipse cx="40" cy="20" rx="10" ry="18" fill="#f4b8d0" transform="rotate(240 40 40)"/>
+  <ellipse cx="40" cy="20" rx="10" ry="18" fill="#e8a0c0" transform="rotate(300 40 40)"/>
+  <circle cx="40" cy="40" r="10" fill="#fff0f6"/>
+</svg>
+
+<!-- Top Right Flower -->
+
+<svg viewBox="0 0 60 60" fill="none"
+  style="position:absolute;bottom:-10;right:-400;width:80px;height:80px;z-index:1;pointer-events:none;animation:flowerSpin 25s linear infinite reverse;opacity:0.7;">
+  <ellipse cx="30" cy="14" rx="7" ry="13" fill="#c8a8e8" transform="rotate(0 30 30)"/>
+  <ellipse cx="30" cy="14" rx="7" ry="13" fill="#b89ae0" transform="rotate(72 30 30)"/>
+  <ellipse cx="30" cy="14" rx="7" ry="13" fill="#d0b0ec" transform="rotate(144 30 30)"/>
+  <ellipse cx="30" cy="14" rx="7" ry="13" fill="#c0a0e4" transform="rotate(216 30 30)"/>
+  <ellipse cx="30" cy="14" rx="7" ry="13" fill="#c8a8e8" transform="rotate(288 30 30)"/>
+  <circle cx="30" cy="30" r="7" fill="#f5f0ff"/>
+</svg>
+    </div>
+  </div>
+ 
+  <!-- FILTER -->
+  <div class="filter-bar">
+    <div class="filter-inner">
+      <button *ngFor="let cat of categories"
+        class="filter-btn" [class.active]="selectedCategory === cat"
+        (click)="filterCategory(cat)">
+        <span>{{getCatIcon(cat)}}</span><span>{{cat}}</span>
+      </button>
+    </div>
+  </div>
+ 
+  <!-- SKELETON -->
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="loading-grid">
+      <div class="skeleton-card" *ngFor="let s of [1,2,3,4,5,6,7,8]">
+        <div class="sk-img"></div>
+        <div class="sk-line sk-title"></div>
+        <div class="sk-line sk-desc"></div>
+        <div class="sk-line sk-price"></div>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- PRODUCTS -->
+  <div class="products-wrap" *ngIf="!isLoading">
+    <div class="products-grid">
+      <div class="prod-card"
+           *ngFor="let p of filteredProducts; let i = index"
+           [class.visible]="isVisible(i)">
+ 
+        <div class="prod-img-wrap">
+          <img [src]="p.imageUrl" [alt]="p.name" class="prod-img" (error)="onImgError($event)">
+          <span class="badge-cat">{{p.category}}</span>
+         <span class="badge-offer" *ngIf="p.discount && p.discount > 0">{{p.discount}}% OFF</span>
+          <div class="prod-overlay">
+            <button class="overlay-btn" (click)="addToCart(p)" *ngIf="authService.isLoggedIn()">
+              🛒 Add to Cart
+            </button>
+            <button class="overlay-btn sign-in-btn" (click)="goToLogin()" *ngIf="!authService.isLoggedIn()">
+              🔒 Sign In to Buy
+            </button>
+            <a class="overlay-view" [routerLink]="['/products', p.id]">View Details →</a>
+          </div>
+        </div>
+ 
+        <div class="prod-body">
+          <span class="prod-cat-label">{{p.category}}</span>
+          <h3 class="prod-name" [routerLink]="['/products', p.id]">{{p.name}}</h3>
+          <p class="prod-desc">{{p.description}}</p>
+          <div class="prod-footer">
+           <div class="price-block" *ngIf="!p.discount || p.discount === 0">
+  <span class="price-main">${{p.price.toFixed(2)}}</span>
+</div>
+<div class="price-block offer" *ngIf="p.discount && p.discount > 0">
+  <span class="price-old">${{p.price.toFixed(2)}}</span>
+  <span class="price-new">${{(p.price - p.price * p.discount / 100).toFixed(2)}}</span>
+  <span class="price-save">-{{p.discount}}%</span>
+</div>
+            <button class="add-btn"
+              (click)="authService.isLoggedIn() ? addToCart(p) : goToLogin()"
+              [class.locked]="!authService.isLoggedIn()">
+              <span *ngIf="authService.isLoggedIn()">+</span>
+              <span *ngIf="!authService.isLoggedIn()">🔒</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- NO RESULTS -->
+  <div class="no-results" *ngIf="!isLoading && filteredProducts.length === 0">
+    <div>🔍</div>
+    <h3>No products found</h3>
+    <button class="btn-reset" (click)="filterCategory('All')">Show All</button>
+  </div>
+ 
+</div>
+ 
+<!-- LOGIN MODAL -->
+<div class="modal-bg" *ngIf="showLoginModal" (click)="showLoginModal=false">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+    <div class="modal-emoji">🛒</div>
+    <h3>Sign In to Shop</h3>
+    <p>You need to be logged in to add products to your cart.</p>
+    <div class="modal-actions">
+      <button class="modal-ghost" (click)="showLoginModal=false">Cancel</button>
+      <button class="modal-primary" (click)="goToLogin()">Login Now →</button>
+    </div>
+  </div>
+</div>
+ 
+<div class="toast-wrap" [class.show]="cartToastVisible">
+  <div class="toast-inner">
+    <span class="toast-icon">🛒</span>
+    <div>
+      <div class="toast-title">Added to Cart!</div>
+      <div class="toast-sub">{{ cartToastMsg }}</div>
+    </div>
+    <span>✅</span>
+  </div>
+</div>

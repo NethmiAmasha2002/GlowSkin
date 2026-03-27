@@ -1,0 +1,271 @@
+<!-- ===== EMPTY CART ===== -->
+<div class="empty-cart" *ngIf="cartItems.length === 0 && !orderPlaced">
+  <div class="empty-bag">
+    <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+      <circle cx="40" cy="40" r="38" fill="url(#emptyGrad)" opacity="0.12"/>
+      <path d="M25 28h30l-4 28H29L25 28z" stroke="url(#emptyGrad)" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+      <path d="M33 28c0-3.9 3.1-7 7-7s7 3.1 7 7" stroke="url(#emptyGrad)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <circle cx="35" cy="42" r="2" fill="url(#emptyGrad)"/>
+      <circle cx="45" cy="42" r="2" fill="url(#emptyGrad)"/>
+      <defs>
+        <linearGradient id="emptyGrad" x1="0" y1="0" x2="80" y2="80">
+          <stop offset="0%" stop-color="#e8a4b8"/>
+          <stop offset="100%" stop-color="#a04080"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+  <h2>Your bag is empty</h2>
+  <p>Looks like you haven't added anything yet.<br>Let's find something beautiful for your skin.</p>
+  <a routerLink="/products" class="shop-btn">
+    ✨ Explore Collection
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  </a>
+</div>
+ 
+<!-- ===== ORDER SUCCESS ===== -->
+<div class="order-success-page" *ngIf="orderPlaced">
+  <div class="success-confetti">
+    <div class="confetti-piece" *ngFor="let c of [1,2,3,4,5,6,7,8,9,10]"></div>
+  </div>
+  <div class="success-card">
+    <div class="success-check">
+      <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+        <circle cx="20" cy="20" r="19" fill="url(#successGrad)"/>
+        <path d="M12 20l6 6 10-12" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <defs>
+          <linearGradient id="successGrad" x1="0" y1="0" x2="40" y2="40">
+            <stop offset="0%" stop-color="#c97b9b"/>
+            <stop offset="100%" stop-color="#a04080"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <h2>Order Placed! 🎉</h2>
+    <p>Thank you <strong>{{address.name}}</strong>! Your order is confirmed and will be delivered to <strong>{{address.city}}</strong>.</p>
+    <div class="success-info">
+      <div class="success-info-item">
+        <span class="si-icon">📦</span>
+        <div>
+          <span class="si-label">Order Status</span>
+          <span class="si-value">Pending Review</span>
+        </div>
+      </div>
+      <div class="success-info-item">
+        <span class="si-icon">🔔</span>
+        <div>
+          <span class="si-label">Notification</span>
+          <span class="si-value">Check your bell for updates</span>
+        </div>
+      </div>
+    </div>
+    <a routerLink="/products" class="shop-btn">Continue Shopping →</a>
+  </div>
+</div>
+ 
+<!-- ===== CART WITH ITEMS ===== -->
+<div class="cart-page" *ngIf="cartItems.length > 0 && !orderPlaced">
+ 
+  <!-- Page Header -->
+  <div class="cart-page-header">
+    <div class="header-mesh"></div>
+    <div class="header-inner">
+      <a routerLink="/products" class="back-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Back
+      </a>
+      <div class="header-title-row">
+        <h1 class="cart-heading">Shopping Bag</h1>
+        <span class="cart-badge-count">{{cartItems.length}} item{{cartItems.length !== 1 ? 's' : ''}}</span>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- Main Layout -->
+  <div class="cart-main">
+ 
+    <!-- LEFT COLUMN -->
+    <div class="cart-left">
+ 
+      <!-- Items -->
+      <div class="items-card">
+        <div class="cart-item" *ngFor="let item of cartItems; let i = index"
+             [style.animation-delay]="(i * 0.08) + 's'">
+ 
+          <div class="item-thumb">
+            <img [src]="item.imageUrl" [alt]="item.name" (error)="onImgError($event)">
+            <span class="item-qty-badge">{{item.quantity}}</span>
+          </div>
+ 
+          <div class="item-info">
+            <span class="item-cat-tag">{{item.category}}</span>
+            <h3 class="item-title">{{item.name}}</h3>
+            <p class="item-subtitle">{{item.description}}</p>
+ 
+            <!-- Price with discount -->
+            <div class="item-price-row">
+              <ng-container *ngIf="item.discount && item.discount > 0">
+                <span class="price-struck">${{item.price.toFixed(2)}}</span>
+                <span class="price-live">${{getItemPrice(item).toFixed(2)}}</span>
+                <span class="disc-pill">-{{item.discount}}%</span>
+              </ng-container>
+              <span class="price-live" *ngIf="!item.discount || item.discount === 0">
+                ${{item.price.toFixed(2)}}
+              </span>
+            </div>
+          </div>
+ 
+          <div class="item-right">
+            <!-- Total price -->
+            <div class="item-total">
+              ${{(getItemPrice(item) * item.quantity).toFixed(2)}}
+            </div>
+ 
+            <!-- Qty stepper -->
+            <div class="qty-stepper">
+              <button class="step-btn" (click)="updateQty(item, -1)" [disabled]="item.quantity <= 1">−</button>
+              <span class="step-val">{{item.quantity}}</span>
+              <button class="step-btn" (click)="updateQty(item, 1)">+</button>
+            </div>
+ 
+            <!-- Remove -->
+            <button class="remove-item-btn" (click)="removeItem(item)" title="Remove">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"/>
+                <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- Promo Code -->
+      <div class="promo-card">
+        <div class="promo-left">
+          <div class="promo-tag-icon">🏷️</div>
+          <div class="promo-text">
+            <strong>Promo Code</strong>
+            <span>Save with a discount code</span>
+          </div>
+        </div>
+        <div class="promo-right">
+          <div class="promo-input-wrap" [class.applied]="promoSuccess">
+            <input type="text" [(ngModel)]="promoCode"
+                   placeholder="Enter code..."
+                   class="promo-field"
+                   [disabled]="promoSuccess">
+            <button class="promo-apply-btn" (click)="applyPromo()" *ngIf="!promoSuccess">
+              Apply
+            </button>
+            <span class="promo-applied-tick" *ngIf="promoSuccess">✓ Applied</span>
+          </div>
+          <p class="promo-success-msg" *ngIf="promoSuccess">
+            🎉 <strong>{{promoCode.toUpperCase()}}</strong> — {{promoDiscount}}% off your subtotal!
+          </p>
+        </div>
+      </div>
+ 
+    </div>
+ 
+    <!-- RIGHT COLUMN: Order Summary -->
+    <div class="cart-right">
+      <div class="summary-panel">
+ 
+        <h2 class="summary-heading">Order Summary</h2>
+ 
+        <!-- Line items -->
+        <div class="summary-lines">
+          <div class="summary-line" *ngFor="let item of cartItems">
+            <div class="sum-item-name">
+              <span class="sum-item-img-wrap">
+                <img [src]="item.imageUrl" [alt]="item.name" (error)="onImgError($event)">
+              </span>
+              <span>{{item.name}} <em>×{{item.quantity}}</em></span>
+            </div>
+            <span class="sum-item-price">${{(getItemPrice(item) * item.quantity).toFixed(2)}}</span>
+          </div>
+        </div>
+ 
+        <div class="summary-sep"></div>
+ 
+        <!-- Totals -->
+        <div class="totals-block">
+          <div class="total-row">
+            <span>Subtotal</span>
+            <span>${{subtotal.toFixed(2)}}</span>
+          </div>
+          <div class="total-row promo-row" *ngIf="promoSuccess">
+            <span>Promo ({{promoDiscount}}% off)</span>
+            <span class="saving">−${{discount.toFixed(2)}}</span>
+          </div>
+          <div class="total-row">
+            <span>Delivery</span>
+            <span class="free-chip">FREE</span>
+          </div>
+        </div>
+ 
+        <div class="grand-total-row">
+          <span>Total</span>
+          <span class="grand-amount">${{total.toFixed(2)}}</span>
+        </div>
+ 
+        <!-- COD badge -->
+        <div class="cod-badge">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/>
+          </svg>
+          <div>
+            <span class="cod-title">Cash on Delivery</span>
+            <span class="cod-sub">Pay when your order arrives</span>
+          </div>
+        </div>
+ 
+        <!-- Delivery Form -->
+        <div class="delivery-section">
+          <h3 class="delivery-heading">📍 Delivery Details</h3>
+ 
+          <div class="delivery-fields">
+            <div class="field-group">
+              <label>Full Name</label>
+              <input type="text" [(ngModel)]="address.name" placeholder="Jane Doe" class="d-input">
+            </div>
+            <div class="field-group">
+              <label>Email</label>
+              <input type="email" [(ngModel)]="address.email" placeholder="jane@email.com" class="d-input">
+            </div>
+            <div class="field-group">
+              <label>Phone</label>
+              <input type="tel" [(ngModel)]="address.phone" placeholder="+1 555 0000" class="d-input">
+            </div>
+            <div class="field-group">
+              <label>Street Address</label>
+              <input type="text" [(ngModel)]="address.street" placeholder="123 Main St" class="d-input">
+            </div>
+            <div class="field-group">
+              <label>City</label>
+              <input type="text" [(ngModel)]="address.city" placeholder="New York" class="d-input">
+            </div>
+          </div>
+ 
+          <button class="place-btn" (click)="placeOrder()"
+                  [disabled]="isPlacing || !isFormValid()">
+            <span *ngIf="!isPlacing">
+              🛍️ Place Order • ${{total.toFixed(2)}}
+            </span>
+            <span *ngIf="isPlacing" class="placing-anim">
+              <span class="spin-dot"></span> Placing...
+            </span>
+          </button>
+ 
+          <div class="trust-strip">
+            <span>🔒 Secure</span>
+            <span>📦 Free Returns</span>
+            <span>✅ Guaranteed</span>
+          </div>
+        </div>
+ 
+      </div>
+    </div>
+ 
+  </div>
+</div>
